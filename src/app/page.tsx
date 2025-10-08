@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -138,7 +137,7 @@ export default function Home() {
       <div className="container">
         <div className="body_left">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <Image src="/images/biubiubiu.gif" alt="" draggable={false} />
+          <img src="/images/biubiubiu.gif" alt="" draggable={false} />
         </div>
 
         <div className="body_center love">
