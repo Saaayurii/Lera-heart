@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -104,7 +105,7 @@ export default function Home() {
       const target = 120;
       const speed = 1;
 
-      let love_top = parseFloat(window.getComputedStyle(love, null).top.slice(0, -2));
+      const love_top = parseFloat(window.getComputedStyle(love, null).top.slice(0, -2));
 
       timer2 = setInterval(() => {
         distance += speed;
@@ -136,7 +137,8 @@ export default function Home() {
 
       <div className="container">
         <div className="body_left">
-          <img src="/images/biubiubiu.gif" alt="" draggable={false} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <Image src="/images/biubiubiu.gif" alt="" draggable={false} />
         </div>
 
         <div className="body_center love">
