@@ -1,103 +1,160 @@
-import Image from "next/image";
+'use client';
+
+import { useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  useEffect(() => {
+    const blk_pitn: Record<string, number[][]> = {
+      block1: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+      block2: [[0, 1], [0, 0], [-1, 0], [0, -1]],
+      block3: [[-1, 1], [0, 0], [-1, 0], [-1, -1]],
+      block4: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+      block5: [[-1, 1], [0, 0], [-1, 0], [0, -1]],
+      block6: [[0, -1], [0, 0], [-1, 0], [1, -1]],
+      block7: [[-1, -1], [0, 0], [-1, 0], [1, 0]],
+      block8: [[-1, 1], [0, 0], [-1, 0], [-1, -1]],
+      block9: [[0, -1], [0, 0], [-1, 0], [1, 0]],
+      block10: [[-1, 1], [0, 0], [-1, 0], [1, 0]],
+      block11: [[2, 0], [0, 0], [-1, 0], [1, 0]],
+      block12: [[0, 1], [0, 0], [-1, 0], [0, -1]],
+      block13: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+      block14: [[1, 1], [0, 0], [-1, 0], [1, 0]],
+      block15: [[1, -1], [0, 0], [-1, 0], [1, 0]],
+      block16: [[-1, -1], [0, 0], [-1, 0], [1, 0]],
+      block17: [[0, 1], [0, 0], [-1, 0], [0, -1]],
+      block18: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+      block19: [[0, -1], [0, 0], [-1, 0], [1, 0]],
+      block20: [[1, -1], [0, 0], [-1, 0], [1, 0]],
+      block21: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+      block22: [[1, 1], [0, 0], [-1, 0], [1, 0]],
+      block23: [[0, 2], [0, 0], [0, -1], [0, 1]]
+    };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    const offset_pitn: Record<string, number[]> = {
+      block1: [5, 3],
+      block2: [5, 1],
+      block3: [3, 4],
+      block4: [3, 2],
+      block5: [3, -1],
+      block6: [2, 5],
+      block7: [2, 1],
+      block8: [1, -1],
+      block9: [1, -3],
+      block10: [1, 2],
+      block11: [0, 3],
+      block12: [0, 0],
+      block13: [-1, -4],
+      block14: [0, -2],
+      block15: [-2, 4],
+      block16: [-2, 2],
+      block17: [-2, 0],
+      block18: [-3, -2],
+      block19: [-4, 0],
+      block20: [-3, 5],
+      block21: [-5, 3],
+      block22: [-4, 1],
+      block23: [-6, 1]
+    };
+
+    const blocks = document.getElementsByClassName("block");
+    const block = blocks[0] as HTMLElement;
+    const love = document.getElementsByClassName("love")[0] as HTMLElement;
+    let timer: NodeJS.Timeout | null = null;
+    let index = 0;
+
+    block.style.top = "50%";
+    block.style.left = "50%";
+    block.style.margin = "-20px 0 0 -20px";
+
+    const block_left = parseFloat(window.getComputedStyle(block, null).left.slice(0, -2));
+    const block_top = parseFloat(window.getComputedStyle(block, null).top.slice(0, -2));
+
+    function Next() {
+      if (++index >= 24) {
+        if (timer) clearInterval(timer);
+        Rise();
+        return;
+      }
+
+      block.style.visibility = "visible";
+
+      block.style.left = block_left + 40 * offset_pitn["block" + index][0] + "px";
+      block.style.top = block_top - 40 * offset_pitn["block" + index][1] + "px";
+
+      for (let i = 0; i < block.children.length; i++) {
+        const child = block.children[i] as HTMLElement;
+        child.style.left = blk_pitn["block" + index][i][0] * -40 + "px";
+        child.style.top = blk_pitn["block" + index][i][1] * -40 + "px";
+      }
+
+      const clone_block = block.cloneNode(true);
+      love.appendChild(clone_block);
+
+      if (love.children.length >= 24) {
+        const lastBlock = blocks[blocks.length - 1] as HTMLElement;
+        (lastBlock.children[2] as HTMLElement).style.display = "none";
+        block.style.display = "none";
+      }
+    }
+
+    function Rise() {
+      console.log("начало подъема");
+      let timer2: NodeJS.Timeout | null = null;
+      let distance = 0;
+      const target = 120;
+      const speed = 1;
+
+      let love_top = parseFloat(window.getComputedStyle(love, null).top.slice(0, -2));
+
+      timer2 = setInterval(() => {
+        distance += speed;
+        if (distance >= target) {
+          if (timer2) clearInterval(timer2);
+          console.log("подъем завершен");
+        }
+
+        love.style.top = (love_top - distance) + "px";
+      }, 22);
+    }
+
+    setTimeout(() => {
+      timer = setInterval(() => {
+        Next();
+      }, 300);
+    }, 12000);
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, []);
+
+  return (
+    <>
+      <audio autoPlay loop id="audios" preload="auto">
+        <source src="/MP3/1.mp3" />
+      </audio>
+
+      <div className="container">
+        <div className="body_left">
+          <img src="/images/biubiubiu.gif" alt="" draggable={false} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <div className="body_center love">
+          <div className="block">
+            <div className="div1"></div>
+            <div className="div2"></div>
+            <div className="div3"></div>
+            <div className="div4"></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="footer">
+        <div className="border">
+          <div className="border-top"></div>
+          <div className="border-bottom"></div>
+        </div>
+      </div>
+    </>
   );
 }
